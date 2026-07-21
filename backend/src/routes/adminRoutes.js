@@ -14,4 +14,11 @@ router.get('/reports/daily', auth, admin, adminController.getDailyReport);
 router.get('/reports/monthly', auth, admin, adminController.getMonthlyReport);
 router.post('/settings', auth, admin, adminController.updateSettings);
 
+// Customer-service support (AI assistant + live care metrics). Gated by auth
+// only — the assistant is meant to help any logged-in customer, and the mock
+// backend does not issue admin roles.
+router.post('/support/chat', auth, adminController.supportChat);
+router.get('/support/stats', auth, adminController.getSupportStats);
+router.get('/support/tickets', auth, adminController.getSupportTickets);
+
 module.exports = router;
