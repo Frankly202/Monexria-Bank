@@ -2,9 +2,17 @@ import 'package:flutter/material.dart';
 
 import '../theme.dart';
 import 'dashboard_section.dart';
-import 'cards_section.dart';
-import 'payments_section.dart';
-import 'profile_section.dart';
+import 'tracker_section.dart';
+import 'authentication_section.dart';
+import 'verification_section.dart';
+
+/// Logical section indices used for navigation across the app.
+class AppSection {
+  static const int dashboard = 0;
+  static const int tracker = 1;
+  static const int authentication = 2;
+  static const int verification = 3;
+}
 
 /// Top-level shell that hosts the 4 sections and the responsive navigation bar.
 ///
@@ -29,36 +37,37 @@ class _NavItem {
   final String label;
   final IconData icon;
   final IconData selectedIcon;
-  final WidgetBuilder builder;
+  final Widget Function(void Function(int) onOpenSection) builder;
 }
 
 class _HomeShellState extends State<HomeShell> {
   int _selectedIndex = 0;
 
-  static final List<_NavItem> _sections = <_NavItem>[
+  late final List<_NavItem> _sections = <_NavItem>[
     _NavItem(
       label: 'Dashboard',
       icon: Icons.dashboard_outlined,
       selectedIcon: Icons.dashboard,
-      builder: (_) => const DashboardSection(),
+      builder: (onOpenSection) =>
+          DashboardSection(onOpenSection: onOpenSection),
     ),
     _NavItem(
-      label: 'Cards',
-      icon: Icons.credit_card_outlined,
-      selectedIcon: Icons.credit_card,
-      builder: (_) => const CardsSection(),
+      label: 'Tracker',
+      icon: Icons.insights_outlined,
+      selectedIcon: Icons.insights,
+      builder: (_) => const TrackerSection(),
     ),
     _NavItem(
-      label: 'Payments',
-      icon: Icons.swap_horiz_outlined,
-      selectedIcon: Icons.swap_horiz,
-      builder: (_) => const PaymentsSection(),
+      label: 'Authentication',
+      icon: Icons.lock_outline,
+      selectedIcon: Icons.lock,
+      builder: (_) => const AuthenticationSection(),
     ),
     _NavItem(
-      label: 'Profile',
-      icon: Icons.person_outline,
-      selectedIcon: Icons.person,
-      builder: (_) => const ProfileSection(),
+      label: 'Verification',
+      icon: Icons.verified_user_outlined,
+      selectedIcon: Icons.verified_user,
+      builder: (_) => const VerificationSection(),
     ),
   ];
 
@@ -77,7 +86,7 @@ class _HomeShellState extends State<HomeShell> {
           constraints: const BoxConstraints(
             maxWidth: Breakpoints.maxContentWidth,
           ),
-          child: _sections[_selectedIndex].builder(context),
+          child: _sections[_selectedIndex].builder(_onDestinationSelected),
         ),
       ),
     );
