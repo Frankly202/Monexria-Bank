@@ -5,6 +5,7 @@ function Profile() {
   const [profile, setProfile] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({});
+  const [error, setError] = useState('');
 
   useEffect(() => {
     fetchProfile();
@@ -18,8 +19,10 @@ function Profile() {
       });
       setProfile(response.data);
       setFormData(response.data);
-    } catch (error) {
-      console.error('Error fetching profile:', error);
+      setError('');
+    } catch (err) {
+      console.error('Error fetching profile:', err);
+      setError(err.response?.data?.error || 'Failed to load profile. Please try again.');
     }
   };
 
@@ -30,15 +33,20 @@ function Profile() {
         headers: { Authorization: `Bearer ${token}` }
       });
       setIsEditing(false);
+      setError('');
       fetchProfile();
-    } catch (error) {
-      console.error('Error updating profile:', error);
+    } catch (err) {
+      console.error('Error updating profile:', err);
+      setError(err.response?.data?.error || 'Failed to update profile. Please try again.');
     }
   };
 
   return (
     <div className="container mx-auto p-6">
       <h1 className="text-3xl font-bold mb-6">My Profile</h1>
+      {error && (
+        <div className="bg-red-100 text-red-700 p-3 rounded mb-6 max-w-2xl">{error}</div>
+      )}
       {profile && (
         <div className="bg-white p-8 rounded-lg shadow-lg max-w-2xl">
           {!isEditing ? (

@@ -9,6 +9,7 @@ function Transactions() {
     amount: '',
     type: 'deposit'
   });
+  const [error, setError] = useState('');
 
   useEffect(() => {
     fetchTransactions();
@@ -21,8 +22,10 @@ function Transactions() {
         headers: { Authorization: `Bearer ${token}` }
       });
       setTransactions(response.data.transactions);
-    } catch (error) {
-      console.error('Error fetching transactions:', error);
+      setError('');
+    } catch (err) {
+      console.error('Error fetching transactions:', err);
+      setError(err.response?.data?.error || 'Failed to load transactions. Please try again.');
     }
   };
 
@@ -33,17 +36,23 @@ function Transactions() {
       await axios.post(`http://localhost:5000/api/transactions${endpoint}`, formData, {
         headers: { Authorization: `Bearer ${token}` }
       });
+      setError('');
       fetchTransactions();
       setFormData({ accountId: '', amount: '', type: 'deposit' });
       setActiveTab('view');
-    } catch (error) {
-      console.error('Error processing transaction:', error);
+    } catch (err) {
+      console.error('Error processing transaction:', err);
+      setError(err.response?.data?.error || 'Failed to process transaction. Please try again.');
     }
   };
 
   return (
     <div className="container mx-auto p-6">
       <h1 className="text-3xl font-bold mb-6">Transactions</h1>
+
+      {error && (
+        <div className="bg-red-100 text-red-700 p-3 rounded mb-6">{error}</div>
+      )}
 
       <div className="flex gap-4 mb-6">
         <button
