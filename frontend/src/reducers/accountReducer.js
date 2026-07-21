@@ -1,3 +1,5 @@
+import { requestState, failureState } from '../utils/reducerHelpers';
+
 const initialState = {
   accounts: [],
   selectedAccount: null,
@@ -8,7 +10,7 @@ const initialState = {
 const accountReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'FETCH_ACCOUNTS_REQUEST':
-      return { ...state, isLoading: true, error: null };
+      return requestState(state);
     case 'FETCH_ACCOUNTS_SUCCESS':
       return {
         ...state,
@@ -16,14 +18,14 @@ const accountReducer = (state = initialState, action) => {
         isLoading: false
       };
     case 'FETCH_ACCOUNTS_FAILURE':
-      return { ...state, isLoading: false, error: action.payload };
+      return failureState(state, action);
     case 'SELECT_ACCOUNT':
       return {
         ...state,
         selectedAccount: state.accounts.find(acc => acc.id === action.payload)
       };
     case 'CREATE_ACCOUNT_REQUEST':
-      return { ...state, isLoading: true, error: null };
+      return requestState(state);
     case 'CREATE_ACCOUNT_SUCCESS':
       return {
         ...state,
@@ -31,7 +33,7 @@ const accountReducer = (state = initialState, action) => {
         isLoading: false
       };
     case 'CREATE_ACCOUNT_FAILURE':
-      return { ...state, isLoading: false, error: action.payload };
+      return failureState(state, action);
     default:
       return state;
   }

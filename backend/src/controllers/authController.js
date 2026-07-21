@@ -1,47 +1,40 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const asyncHandler = require('../utils/asyncHandler');
 
-const register = async (req, res) => {
-  try {
-    const { email, password, firstName, lastName } = req.body;
-    
-    // TODO: Check if user exists in database
-    // TODO: Hash password
-    // TODO: Create user in database
-    // TODO: Send verification email
-    
-    res.status(201).json({
-      message: 'User registered successfully',
-      user: { email, firstName, lastName }
-    });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
+const register = asyncHandler(async (req, res) => {
+  const { email, password, firstName, lastName } = req.body;
 
-const login = async (req, res) => {
-  try {
-    const { email, password } = req.body;
-    
-    // TODO: Find user in database
-    // TODO: Compare password
-    // TODO: Generate JWT token
-    
-    const token = jwt.sign(
-      { id: 'userId', role: 'user' },
-      process.env.JWT_SECRET,
-      { expiresIn: process.env.JWT_EXPIRY }
-    );
-    
-    res.json({
-      message: 'Login successful',
-      token,
-      user: { email }
-    });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
+  // TODO: Check if user exists in database
+  // TODO: Hash password
+  // TODO: Create user in database
+  // TODO: Send verification email
+
+  res.status(201).json({
+    message: 'User registered successfully',
+    user: { email, firstName, lastName }
+  });
+});
+
+const login = asyncHandler(async (req, res) => {
+  const { email, password } = req.body;
+
+  // TODO: Find user in database
+  // TODO: Compare password
+  // TODO: Generate JWT token
+
+  const token = jwt.sign(
+    { id: 'userId', role: 'user' },
+    process.env.JWT_SECRET,
+    { expiresIn: process.env.JWT_EXPIRY }
+  );
+
+  res.json({
+    message: 'Login successful',
+    token,
+    user: { email }
+  });
+});
 
 const logout = (req, res) => {
   // TODO: Invalidate token (add to blacklist)
