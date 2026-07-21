@@ -5,6 +5,7 @@ function Accounts() {
   const [accounts, setAccounts] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({ accountType: 'Checking', currency: 'USD' });
+  const [error, setError] = useState('');
 
   useEffect(() => {
     fetchAccounts();
@@ -17,8 +18,10 @@ function Accounts() {
         headers: { Authorization: `Bearer ${token}` }
       });
       setAccounts(response.data.accounts);
-    } catch (error) {
-      console.error('Error fetching accounts:', error);
+      setError('');
+    } catch (err) {
+      console.error('Error fetching accounts:', err);
+      setError(err.response?.data?.error || 'Failed to load accounts. Please try again.');
     }
   };
 
@@ -29,9 +32,11 @@ function Accounts() {
         headers: { Authorization: `Bearer ${token}` }
       });
       setShowForm(false);
+      setError('');
       fetchAccounts();
-    } catch (error) {
-      console.error('Error creating account:', error);
+    } catch (err) {
+      console.error('Error creating account:', err);
+      setError(err.response?.data?.error || 'Failed to create account. Please try again.');
     }
   };
 
@@ -46,6 +51,10 @@ function Accounts() {
           Create Account
         </button>
       </div>
+
+      {error && (
+        <div className="bg-red-100 text-red-700 p-3 rounded mb-6">{error}</div>
+      )}
 
       {showForm && (
         <div className="bg-gray-100 p-6 rounded-lg mb-6">

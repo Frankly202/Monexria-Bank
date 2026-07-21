@@ -30,7 +30,8 @@ function Register() {
       await axios.post('http://localhost:5000/api/auth/register', formData);
       navigate('/login');
     } catch (err) {
-      setError('Registration failed');
+      console.error('Registration failed:', err);
+      setError(err.response?.data?.error || 'Registration failed');
     }
   };
 

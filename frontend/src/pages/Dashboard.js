@@ -5,6 +5,7 @@ function Dashboard() {
   const [user, setUser] = useState(null);
   const [accounts, setAccounts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     fetchDashboardData();
@@ -21,9 +22,11 @@ function Dashboard() {
       });
       setUser(userRes.data);
       setAccounts(accountsRes.data.accounts);
+      setError('');
       setLoading(false);
-    } catch (error) {
-      console.error('Error fetching dashboard data:', error);
+    } catch (err) {
+      console.error('Error fetching dashboard data:', err);
+      setError(err.response?.data?.error || 'Failed to load dashboard. Please try again.');
       setLoading(false);
     }
   };
@@ -33,6 +36,9 @@ function Dashboard() {
   return (
     <div className="container mx-auto p-6">
       <h1 className="text-3xl font-bold mb-6">Welcome, {user?.firstName}!</h1>
+      {error && (
+        <div className="bg-red-100 text-red-700 p-3 rounded mb-6">{error}</div>
+      )}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {accounts.map((account) => (
           <div key={account.id} className="bg-blue-500 text-white p-6 rounded-lg shadow-lg">
