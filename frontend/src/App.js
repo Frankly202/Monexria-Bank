@@ -5,6 +5,8 @@ import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import Accounts from './pages/Accounts';
 import Transactions from './pages/Transactions';
+import Transfers from './pages/Transfers';
+import Exchange from './pages/Exchange';
 import AdminDashboard from './pages/AdminDashboard';
 import Profile from './pages/Profile';
 import Navbar from './components/Navbar';
@@ -19,6 +21,8 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/accounts" element={<Accounts />} />
         <Route path="/transactions" element={<Transactions />} />
+        <Route path="/transfers" element={<Transfers />} />
+        <Route path="/exchange" element={<Exchange />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/admin" element={<AdminDashboard />} />
       </Routes>

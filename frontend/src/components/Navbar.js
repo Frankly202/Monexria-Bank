@@ -22,6 +22,8 @@ function Navbar() {
               <a href="/" className="hover:underline">Dashboard</a>
               <a href="/accounts" className="hover:underline">Accounts</a>
               <a href="/transactions" className="hover:underline">Transactions</a>
+              <a href="/transfers" className="hover:underline">Transfers</a>
+              <a href="/exchange" className="hover:underline">Exchange</a>
               <a href="/profile" className="hover:underline">Profile</a>
               <a href="/admin" className="hover:underline">Admin</a>
               <button
