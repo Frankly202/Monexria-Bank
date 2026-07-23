@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../utils/api';
 
 function Transactions() {
   const [transactions, setTransactions] = useState([]);
@@ -16,10 +16,7 @@ function Transactions() {
 
   const fetchTransactions = async () => {
     try {
-      const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:5000/api/transactions', {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const response = await api.get('/transactions');
       setTransactions(response.data.transactions);
     } catch (error) {
       console.error('Error fetching transactions:', error);
@@ -28,11 +25,8 @@ function Transactions() {
 
   const handleTransaction = async () => {
     try {
-      const token = localStorage.getItem('token');
       const endpoint = formData.type === 'deposit' ? '/deposit' : '/withdraw';
-      await axios.post(`http://localhost:5000/api/transactions${endpoint}`, formData, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      await api.post(`/transactions${endpoint}`, formData);
       fetchTransactions();
       setFormData({ accountId: '', amount: '', type: 'deposit' });
       setActiveTab('view');

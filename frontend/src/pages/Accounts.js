@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../utils/api';
 
 function Accounts() {
   const [accounts, setAccounts] = useState([]);
@@ -12,10 +12,7 @@ function Accounts() {
 
   const fetchAccounts = async () => {
     try {
-      const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:5000/api/accounts', {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const response = await api.get('/accounts');
       setAccounts(response.data.accounts);
     } catch (error) {
       console.error('Error fetching accounts:', error);
@@ -24,10 +21,7 @@ function Accounts() {
 
   const handleCreateAccount = async () => {
     try {
-      const token = localStorage.getItem('token');
-      await axios.post('http://localhost:5000/api/accounts', formData, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      await api.post('/accounts', formData);
       setShowForm(false);
       fetchAccounts();
     } catch (error) {

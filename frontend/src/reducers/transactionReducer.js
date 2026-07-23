@@ -1,3 +1,5 @@
+import { requestState, failureState } from '../utils/reducerHelpers';
+
 const initialState = {
   transactions: [],
   isLoading: false,
@@ -7,7 +9,7 @@ const initialState = {
 const transactionReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'FETCH_TRANSACTIONS_REQUEST':
-      return { ...state, isLoading: true, error: null };
+      return requestState(state);
     case 'FETCH_TRANSACTIONS_SUCCESS':
       return {
         ...state,
@@ -15,9 +17,9 @@ const transactionReducer = (state = initialState, action) => {
         isLoading: false
       };
     case 'FETCH_TRANSACTIONS_FAILURE':
-      return { ...state, isLoading: false, error: action.payload };
+      return failureState(state, action);
     case 'CREATE_TRANSACTION_REQUEST':
-      return { ...state, isLoading: true, error: null };
+      return requestState(state);
     case 'CREATE_TRANSACTION_SUCCESS':
       return {
         ...state,
@@ -25,7 +27,7 @@ const transactionReducer = (state = initialState, action) => {
         isLoading: false
       };
     case 'CREATE_TRANSACTION_FAILURE':
-      return { ...state, isLoading: false, error: action.payload };
+      return failureState(state, action);
     default:
       return state;
   }
