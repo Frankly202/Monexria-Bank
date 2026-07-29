@@ -33,3 +33,5 @@ pubspec.lock
 # Misc
 .cache/
 .tmp/
+# Test coverage
+coverage/
